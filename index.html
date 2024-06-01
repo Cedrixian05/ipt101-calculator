@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+    <div class="calculator">
+        <h2> Calculator App </h2>
+        <table>
+            <tr>
+                <td colspan="4"><input type="text" id="display" disabled></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="AC" onclick="clearDisplay()" class="operator"></td>
+                <td><input type="button" value="%" onclick="calculatePercentage()" class="operator"></td>
+                <td><input type="button" value="⌫" onclick="backspace()" class="operator"></td> 
+                <td><input type="button" value="÷" onclick="appendOperator('÷')" class="operator"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="1" onclick="appendNumber(1)"></td>
+                <td><input type="button" value="2" onclick="appendNumber(2)"></td>
+                <td><input type="button" value="3" onclick="appendNumber(3)"></td>
+                <td><input type="button" value="×" onclick="appendOperator('*')" class="operator"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="4" onclick="appendNumber(4)"></td>
+                <td><input type="button" value="5" onclick="appendNumber(5)"></td>
+                <td><input type="button" value="6" onclick="appendNumber(6)"></td>
+                <td><input type="button" value="-" onclick="appendOperator('-')" class="operator"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="7" onclick="appendNumber(7)"></td>
+                <td><input type="button" value="8" onclick="appendNumber(8)"></td>
+                <td><input type="button" value="9" onclick="appendNumber(9)"></td>
+                <td><input type="button" value="+" onclick="appendOperator('+')" class="operator"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" value="0" onclick="appendNumber(0)" class="wide"></td>
+                <td><input type="button" value="." onclick="appendDot()"></td>
+                <td><input type="button" value="=" onclick="calculate()" class="operator"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let currentOperator = '';
+
+        function appendNumber(number) {
+            currentInput += number;
+            document.getElementById('display').value = currentInput;
+        }
+
+        function appendOperator(operator) {
+            currentInput += operator;
+            document.getElementById('display').value = currentInput;
+        }
+
+        function appendDot() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                document.getElementById('display').value = currentInput;
+            }
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            document.getElementById('display').value = '';
+        }
+
+        function backspace() {
+            currentInput = currentInput.slice(0, -1);
+            document.getElementById('display').value = currentInput;
+        }
+
+        function calculate() {
+            try {
+                const sanitizedInput = currentInput.replace(/÷/g, '/').replace(/×/g, '*');
+                const result = eval(sanitizedInput);
+                document.getElementById('display').value = result;
+                currentInput = result.toString();
+                currentOperator = '';
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+                currentInput = '';
+                currentOperator = '';
+            }
+        }
+
+        function calculatePercentage() {
+            try {
+                currentInput = (eval(currentInput) / 100).toString();
+                document.getElementById('display').value = currentInput;
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+                currentInput = '';
+                currentOperator = '';
+            }
+        }
+    </script>
+</body>
+</html>
